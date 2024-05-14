@@ -13,7 +13,7 @@ public class Main {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
 				
-		System.out.print("How many employees dou you want to register? ");
+		System.out.print("How many employees do you want to register? ");
 		int n = sc.nextInt();
 		
 		List<Employee> list = new ArrayList<>();
@@ -37,22 +37,32 @@ public class Main {
 		System.out.println();
 		System.out.print("Enter the employee id that will have salary increase: ");
 		int idSal = sc.nextInt();
-		System.out.print("Enter the percentage: ");
-		Double perc = sc.nextDouble();
-		
-		Employee employee1 = list.stream().filter(x -> x.getId() == idSal).findFirst().orElse(null);
-		employee1.salaryIncrease(perc);
-		
-		list.removeIf(x -> x.getId() == idSal);
-		list.add(employee1);
-		
+		Integer pos = position(list, idSal);
+		if(pos == null) {
+			System.out.println("This id doesn't exist!");
+		} else {
+			System.out.print("Enter the percentage: ");
+			Double perc = sc.nextDouble();
+			list.get(pos).salaryIncrease(perc);
+		}
+				
 		System.out.println();
 		System.out.println("List of employees:");
-		for(Employee x : list) {
-			System.out.println(x);
+		for(Employee emp : list) {
+			System.out.println(emp);
 		}
 		
 		sc.close();
+	}
+	
+	//Auxiliar function to check if the id exists
+	public static Integer position(List <Employee> list, int id) {
+		for(int i = 0 ; i < list.size() ; i++) {
+			if(list.get(i).getId() == id) {
+				return i;
+			}
+		}
+		return null;
 	}
 
 }
